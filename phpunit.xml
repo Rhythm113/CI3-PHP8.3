@@ -22,10 +22,6 @@
         </testsuite>
     </testsuites>
 
-    <php>
-        <const name="ENVIRONMENT" value="testing"/>
-    </php>
-
     <logging>
         <junit outputFile="tests/results/junit.xml"/>
     </logging>
