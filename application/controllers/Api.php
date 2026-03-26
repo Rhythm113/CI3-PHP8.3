@@ -1,6 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Load the custom API base controller (CI3 only auto-loads MY_*.php from
+// application/core/, so API_Controller.php must be required explicitly).
+if ( ! class_exists('API_Controller', FALSE))
+{
+    require_once APPPATH . 'core/API_Controller.php';
+}
+
 /**
  * Example API Controller
  * Demonstrates how to use the API_Controller base class
