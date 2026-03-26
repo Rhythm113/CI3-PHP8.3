@@ -2,33 +2,33 @@
 
 ![Tests](https://img.shields.io/badge/tests-failing-red)
 
-> Last updated: **2026-03-26 17:53:20 UTC**
+> Last updated: **2026-03-26 18:02:18 UTC**
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Tests | 16 |
-| Passed | 0 |
+| Passed | 5 |
 | Failed | 10 |
-| Errors | 6 |
+| Errors | 1 |
 | Skipped | 0 |
-| Duration | 0.021s |
+| Duration | 0.020s |
 
 ---
 
 ## Test Suites
 
-### ❌ Tests\Api\AuthApiTest
+### [FAIL] Tests\Api\AuthApiTest
 
 | Test | Status | Time |
 |------|--------|------|
-| test token endpoint returns token | ❌ Fail | 0.006s |
-| test token endpoint rejects empty credentials | ❌ Fail | 0.001s |
-| test token endpoint rejects missing fields | ❌ Fail | 0.001s |
-| test protected endpoint rejects no token | ❌ Fail | 0.001s |
-| test protected endpoint rejects invalid token | ❌ Fail | 0.001s |
-| test protected endpoint accepts valid token | ❌ Fail | 0.001s |
+| test token endpoint returns token | [FAIL] | 0.007s |
+| test token endpoint rejects empty credentials | [FAIL] | 0.001s |
+| test token endpoint rejects missing fields | [FAIL] | 0.001s |
+| test protected endpoint rejects no token | [FAIL] | 0.001s |
+| test protected endpoint rejects invalid token | [FAIL] | 0.001s |
+| test protected endpoint accepts valid token | [FAIL] | 0.001s |
 
 <details><summary>Failure Details</summary>
 
@@ -37,7 +37,7 @@
 Tests\Api\AuthApiTest::test_token_endpoint_returns_token
 Failed asserting that 403 matches expected 200.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:118
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:117
 ```
 
 **test_token_endpoint_rejects_empty_credentials**
@@ -45,7 +45,7 @@ Failed asserting that 403 matches expected 200.
 Tests\Api\AuthApiTest::test_token_endpoint_rejects_empty_credentials
 Failed asserting that 403 matches expected 400.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:132
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:131
 ```
 
 **test_token_endpoint_rejects_missing_fields**
@@ -53,7 +53,7 @@ Failed asserting that 403 matches expected 400.
 Tests\Api\AuthApiTest::test_token_endpoint_rejects_missing_fields
 Failed asserting that 403 matches expected 400.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:140
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:139
 ```
 
 **test_protected_endpoint_rejects_no_token**
@@ -61,7 +61,7 @@ Failed asserting that 403 matches expected 400.
 Tests\Api\AuthApiTest::test_protected_endpoint_rejects_no_token
 Failed asserting that 403 matches expected 401.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:151
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:150
 ```
 
 **test_protected_endpoint_rejects_invalid_token**
@@ -69,7 +69,7 @@ Failed asserting that 403 matches expected 401.
 Tests\Api\AuthApiTest::test_protected_endpoint_rejects_invalid_token
 Failed asserting that 403 matches expected 401.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:161
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:160
 ```
 
 **test_protected_endpoint_accepts_valid_token**
@@ -78,20 +78,20 @@ Tests\Api\AuthApiTest::test_protected_endpoint_accepts_valid_token
 Token generation should succeed
 Failed asserting that null is not null.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:168
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:167
 ```
 
 </details>
 
-### ❌ Tests\Api\HealthApiTest
+### [FAIL] Tests\Api\HealthApiTest
 
 | Test | Status | Time |
 |------|--------|------|
-| test health endpoint returns 200 | ❌ Fail | 0.001s |
-| test health endpoint returns json | ❌ Fail | 0.001s |
-| test health endpoint contains correct data | 💥 Error | 0.001s |
-| test health endpoint has cors headers | ❌ Fail | 0.001s |
-| test health endpoint has rate limit headers | ❌ Fail | 0.001s |
+| test health endpoint returns 200 | [FAIL] | 0.001s |
+| test health endpoint returns json | [FAIL] | 0.001s |
+| test health endpoint contains correct data | [ERROR] | 0.001s |
+| test health endpoint has cors headers | [FAIL] | 0.001s |
+| test health endpoint has rate limit headers | [FAIL] | 0.001s |
 
 <details><summary>Failure Details</summary>
 
@@ -110,7 +110,7 @@ Health endpoint should return 200. Error: <!DOCTYPE HTML PUBLIC "-//IETF//DTD HT
 
 Failed asserting that 403 matches expected 200.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:142
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:125
 ```
 
 **test_health_endpoint_returns_json**
@@ -128,7 +128,7 @@ Failed asserting that '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n
 </body></html>\n
 ' is of type array.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:153
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:133
 ```
 
 **test_health_endpoint_contains_correct_data**
@@ -136,7 +136,7 @@ Failed asserting that '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n
 Tests\Api\HealthApiTest::test_health_endpoint_contains_correct_data
 TypeError: Cannot access offset of type string on string
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:162
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:142
 ```
 
 **test_health_endpoint_has_cors_headers**
@@ -145,7 +145,7 @@ Tests\Api\HealthApiTest::test_health_endpoint_has_cors_headers
 CORS header Access-Control-Allow-Origin should be present
 Failed asserting that an array has the key 'access-control-allow-origin'.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:173
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:153
 ```
 
 **test_health_endpoint_has_rate_limit_headers**
@@ -154,77 +154,18 @@ Tests\Api\HealthApiTest::test_health_endpoint_has_rate_limit_headers
 Rate limit header X-RateLimit-Limit should be present
 Failed asserting that an array has the key 'x-ratelimit-limit'.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:184
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:161
 ```
 
 </details>
 
-### ❌ Tests\Libraries\JwtLibTest
+### [PASS] Tests\Libraries\JwtLibTest
 
 | Test | Status | Time |
 |------|--------|------|
-| test can encode and decode token | 💥 Error | 0.005s |
-| test expired token throws exception | 💥 Error | 0.000s |
-| test wrong secret throws exception | 💥 Error | 0.000s |
-| test token has three parts | 💥 Error | 0.000s |
-| test payload data is preserved | 💥 Error | 0.000s |
-
-<details><summary>Failure Details</summary>
-
-**test_can_encode_and_decode_token**
-```
-Tests\Libraries\JwtLibTest::test_can_encode_and_decode_token
-DomainException: Provided key is too short
-
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:709
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:264
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:232
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Libraries/JwtLibTest.php:51
-```
-
-**test_expired_token_throws_exception**
-```
-Tests\Libraries\JwtLibTest::test_expired_token_throws_exception
-DomainException: Provided key is too short
-
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:709
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:264
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:232
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Libraries/JwtLibTest.php:68
-```
-
-**test_wrong_secret_throws_exception**
-```
-Tests\Libraries\JwtLibTest::test_wrong_secret_throws_exception
-DomainException: Provided key is too short
-
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:709
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:264
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:232
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Libraries/JwtLibTest.php:83
-```
-
-**test_token_has_three_parts**
-```
-Tests\Libraries\JwtLibTest::test_token_has_three_parts
-DomainException: Provided key is too short
-
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:709
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:264
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:232
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Libraries/JwtLibTest.php:98
-```
-
-**test_payload_data_is_preserved**
-```
-Tests\Libraries\JwtLibTest::test_payload_data_is_preserved
-DomainException: Provided key is too short
-
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:709
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:264
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/vendor/firebase/php-jwt/src/JWT.php:232
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Libraries/JwtLibTest.php:120
-```
-
-</details>
+| test can encode and decode token | [PASS] | 0.002s |
+| test expired token throws exception | [PASS] | 0.000s |
+| test wrong secret throws exception | [PASS] | 0.000s |
+| test token has three parts | [PASS] | 0.000s |
+| test payload data is preserved | [PASS] | 0.000s |
 
