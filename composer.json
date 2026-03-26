@@ -1,0 +1,14 @@
+{
+	"description": "The CodeIgniter framework",
+	"name": "codeigniter/framework",
+	"type": "project",
+	"homepage": "https://codeigniter.com",
+	"license": "MIT",
+	"require": {
+		"php": ">=7.4",
+		"firebase/php-jwt": "^6.0"
+	},
+	"config": {
+		"vendor-dir": "vendor"
+	}
+}
