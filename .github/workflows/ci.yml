@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+jobs:
+  # ------------------------------------------------------------------ #
+  # Job 1: PHP syntax lint                                               #
+  # ------------------------------------------------------------------ #
+  lint:
+    name: PHP Syntax Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+
+      - name: Lint application PHP files
+        run: |
+          find application system -name "*.php" -print0 \
+            | xargs -0 -n1 php -l \
+            | grep -v "No syntax errors" || true
+          find application system -name "*.php" -print0 \
+            | xargs -0 php -l > /dev/null
+
+  # ------------------------------------------------------------------ #
+  # Job 2: Composer security audit                                       #
+  # ------------------------------------------------------------------ #
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run Composer security audit
+        run: composer audit
+
+  # ------------------------------------------------------------------ #
+  # Job 3: PHPUnit test suite                                            #
+  # ------------------------------------------------------------------ #
+  tests:
+    name: PHPUnit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run PHPUnit
+        run: ./vendor/bin/phpunit --no-coverage
