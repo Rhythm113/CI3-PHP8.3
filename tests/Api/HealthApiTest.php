@@ -139,6 +139,7 @@ class HealthApiTest extends TestCase
     {
         $response = $this->get('/api/health');
 
+        $this->assertIsArray($response['body'], 'Response body should be valid JSON');
         $this->assertEquals(200, $response['body']['status']);
         $this->assertEquals('API is running', $response['body']['message']);
         $this->assertArrayHasKey('data', $response['body']);

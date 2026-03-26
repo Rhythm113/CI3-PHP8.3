@@ -19,16 +19,16 @@
 
 ## Test Suites
 
-### ❌ Tests\Api\AuthApiTest
+### [FAIL] Tests\Api\AuthApiTest
 
 | Test | Status | Time |
 |------|--------|------|
-| test token endpoint returns token | ❌ Fail | 0.006s |
-| test token endpoint rejects empty credentials | ❌ Fail | 0.001s |
-| test token endpoint rejects missing fields | ❌ Fail | 0.001s |
-| test protected endpoint rejects no token | ❌ Fail | 0.001s |
-| test protected endpoint rejects invalid token | ❌ Fail | 0.001s |
-| test protected endpoint accepts valid token | ❌ Fail | 0.001s |
+| test token endpoint returns token | [FAIL] | 0.006s |
+| test token endpoint rejects empty credentials | [FAIL] | 0.001s |
+| test token endpoint rejects missing fields | [FAIL] | 0.001s |
+| test protected endpoint rejects no token | [FAIL] | 0.001s |
+| test protected endpoint rejects invalid token | [FAIL] | 0.001s |
+| test protected endpoint accepts valid token | [FAIL] | 0.001s |
 
 <details><summary>Failure Details</summary>
 
@@ -83,15 +83,15 @@ Failed asserting that null is not null.
 
 </details>
 
-### ❌ Tests\Api\HealthApiTest
+### [FAIL] Tests\Api\HealthApiTest
 
 | Test | Status | Time |
 |------|--------|------|
-| test health endpoint returns 200 | ❌ Fail | 0.001s |
-| test health endpoint returns json | ❌ Fail | 0.001s |
-| test health endpoint contains correct data | 💥 Error | 0.001s |
-| test health endpoint has cors headers | ❌ Fail | 0.001s |
-| test health endpoint has rate limit headers | ❌ Fail | 0.001s |
+| test health endpoint returns 200 | [FAIL] | 0.001s |
+| test health endpoint returns json | [FAIL] | 0.001s |
+| test health endpoint contains correct data | [ERROR] | 0.001s |
+| test health endpoint has cors headers | [FAIL] | 0.001s |
+| test health endpoint has rate limit headers | [FAIL] | 0.001s |
 
 <details><summary>Failure Details</summary>
 
@@ -159,15 +159,15 @@ Failed asserting that an array has the key 'x-ratelimit-limit'.
 
 </details>
 
-### ❌ Tests\Libraries\JwtLibTest
+### [FAIL] Tests\Libraries\JwtLibTest
 
 | Test | Status | Time |
 |------|--------|------|
-| test can encode and decode token | 💥 Error | 0.005s |
-| test expired token throws exception | 💥 Error | 0.000s |
-| test wrong secret throws exception | 💥 Error | 0.000s |
-| test token has three parts | 💥 Error | 0.000s |
-| test payload data is preserved | 💥 Error | 0.000s |
+| test can encode and decode token | [ERROR] | 0.005s |
+| test expired token throws exception | [ERROR] | 0.000s |
+| test wrong secret throws exception | [ERROR] | 0.000s |
+| test token has three parts | [ERROR] | 0.000s |
+| test payload data is preserved | [ERROR] | 0.000s |
 
 <details><summary>Failure Details</summary>
 
