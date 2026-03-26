@@ -2,18 +2,18 @@
 
 ![Tests](https://img.shields.io/badge/tests-failing-red)
 
-> Last updated: **2026-03-26 17:53:20 UTC**
+> Last updated: **2026-03-26 18:02:18 UTC**
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Tests | 16 |
-| Passed | 0 |
+| Passed | 5 |
 | Failed | 10 |
-| Errors | 6 |
+| Errors | 1 |
 | Skipped | 0 |
-| Duration | 0.021s |
+| Duration | 0.020s |
 
 ---
 
@@ -23,7 +23,7 @@
 
 | Test | Status | Time |
 |------|--------|------|
-| test token endpoint returns token | [FAIL] | 0.006s |
+| test token endpoint returns token | [FAIL] | 0.007s |
 | test token endpoint rejects empty credentials | [FAIL] | 0.001s |
 | test token endpoint rejects missing fields | [FAIL] | 0.001s |
 | test protected endpoint rejects no token | [FAIL] | 0.001s |
@@ -37,7 +37,7 @@
 Tests\Api\AuthApiTest::test_token_endpoint_returns_token
 Failed asserting that 403 matches expected 200.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:118
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:117
 ```
 
 **test_token_endpoint_rejects_empty_credentials**
@@ -45,7 +45,7 @@ Failed asserting that 403 matches expected 200.
 Tests\Api\AuthApiTest::test_token_endpoint_rejects_empty_credentials
 Failed asserting that 403 matches expected 400.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:132
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:131
 ```
 
 **test_token_endpoint_rejects_missing_fields**
@@ -53,7 +53,7 @@ Failed asserting that 403 matches expected 400.
 Tests\Api\AuthApiTest::test_token_endpoint_rejects_missing_fields
 Failed asserting that 403 matches expected 400.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:140
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:139
 ```
 
 **test_protected_endpoint_rejects_no_token**
@@ -61,7 +61,7 @@ Failed asserting that 403 matches expected 400.
 Tests\Api\AuthApiTest::test_protected_endpoint_rejects_no_token
 Failed asserting that 403 matches expected 401.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:151
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:150
 ```
 
 **test_protected_endpoint_rejects_invalid_token**
@@ -69,7 +69,7 @@ Failed asserting that 403 matches expected 401.
 Tests\Api\AuthApiTest::test_protected_endpoint_rejects_invalid_token
 Failed asserting that 403 matches expected 401.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:161
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:160
 ```
 
 **test_protected_endpoint_accepts_valid_token**
@@ -78,7 +78,7 @@ Tests\Api\AuthApiTest::test_protected_endpoint_accepts_valid_token
 Token generation should succeed
 Failed asserting that null is not null.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:168
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/AuthApiTest.php:167
 ```
 
 </details>
@@ -110,7 +110,7 @@ Health endpoint should return 200. Error: <!DOCTYPE HTML PUBLIC "-//IETF//DTD HT
 
 Failed asserting that 403 matches expected 200.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:142
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:125
 ```
 
 **test_health_endpoint_returns_json**
@@ -128,7 +128,7 @@ Failed asserting that '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n
 </body></html>\n
 ' is of type array.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:153
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:133
 ```
 
 **test_health_endpoint_contains_correct_data**
@@ -136,7 +136,7 @@ Failed asserting that '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n
 Tests\Api\HealthApiTest::test_health_endpoint_contains_correct_data
 TypeError: Cannot access offset of type string on string
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:162
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:142
 ```
 
 **test_health_endpoint_has_cors_headers**
@@ -145,7 +145,7 @@ Tests\Api\HealthApiTest::test_health_endpoint_has_cors_headers
 CORS header Access-Control-Allow-Origin should be present
 Failed asserting that an array has the key 'access-control-allow-origin'.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:173
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:153
 ```
 
 **test_health_endpoint_has_rate_limit_headers**
@@ -154,10 +154,11 @@ Tests\Api\HealthApiTest::test_health_endpoint_has_rate_limit_headers
 Rate limit header X-RateLimit-Limit should be present
 Failed asserting that an array has the key 'x-ratelimit-limit'.
 
-/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:184
+/home/runner/work/CI3-PHP8.3/CI3-PHP8.3/tests/Api/HealthApiTest.php:161
 ```
 
 </details>
+
 
 ### [FAIL] Tests\Libraries\JwtLibTest
 
@@ -227,4 +228,15 @@ DomainException: Provided key is too short
 ```
 
 </details>
+=======
+### [PASS] Tests\Libraries\JwtLibTest
+
+| Test | Status | Time |
+|------|--------|------|
+| test can encode and decode token | [PASS] | 0.002s |
+| test expired token throws exception | [PASS] | 0.000s |
+| test wrong secret throws exception | [PASS] | 0.000s |
+| test token has three parts | [PASS] | 0.000s |
+| test payload data is preserved | [PASS] | 0.000s |
+
 
