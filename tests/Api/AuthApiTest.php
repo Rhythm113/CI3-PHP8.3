@@ -9,15 +9,13 @@ use PHPUnit\Framework\TestCase;
  *
  * Tests token generation and protected endpoint access.
  *
- * ┌─────────────────────────────────────────────────────────────┐
- * │  ADDING NEW AUTH TESTS                                      │
- * │                                                              │
- * │  - Use $this->getToken() to get a valid JWT for requests    │
- * │  - Pass it via: $this->get('/api/endpoint', [               │
- * │        'Authorization' => 'Bearer ' . $token                │
- * │    ]);                                                       │
- * │  - Test both authenticated and unauthenticated scenarios    │
- * └─────────────────────────────────────────────────────────────┘
+ * HOW TO ADD AUTH TESTS:
+ *
+ *   - Use $this->getToken() to get a valid JWT for authenticated requests
+ *   - Pass it via: $this->get('/api/endpoint', [
+ *         'Authorization' => 'Bearer ' . $token
+ *     ]);
+ *   - Test both authenticated and unauthenticated scenarios
  */
 class AuthApiTest extends TestCase
 {
@@ -29,7 +27,7 @@ class AuthApiTest extends TestCase
         $this->base_url = getenv('API_BASE_URL') ?: 'http://localhost';
     }
 
-    // ── HTTP helpers (same pattern as HealthApiTest) ──
+    // -- HTTP helpers (same pattern as HealthApiTest) --
 
     protected function get(string $uri, array $headers = []): array
     {
@@ -62,18 +60,19 @@ class AuthApiTest extends TestCase
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
 
-        $response = curl_exec($ch);
-        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $response    = curl_exec($ch);
+        $status      = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $error = curl_error($ch);
+        $error       = curl_error($ch);
         curl_close($ch);
 
         if ($response === false) {
             return ['status' => 0, 'headers' => [], 'body' => null, 'raw' => '', 'error' => $error];
         }
 
-        $body_str = substr($response, $header_size);
+        $body_str   = substr($response, $header_size);
         $header_str = substr($response, 0, $header_size);
+
         $headers_parsed = [];
         foreach (explode("\r\n", trim($header_str)) as $line) {
             if (str_contains($line, ': ')) {
@@ -104,9 +103,9 @@ class AuthApiTest extends TestCase
         return $response['body']['data']['access_token'] ?? null;
     }
 
-    // ─────────────────────────────────────────────────────────────
+    // ---------------------------------------------------------------
     //  Token Generation Tests
-    // ─────────────────────────────────────────────────────────────
+    // ---------------------------------------------------------------
 
     public function test_token_endpoint_returns_token(): void
     {
@@ -140,9 +139,9 @@ class AuthApiTest extends TestCase
         $this->assertEquals(400, $response['status']);
     }
 
-    // ─────────────────────────────────────────────────────────────
+    // ---------------------------------------------------------------
     //  Protected Endpoint Tests
-    // ─────────────────────────────────────────────────────────────
+    // ---------------------------------------------------------------
 
     public function test_protected_endpoint_rejects_no_token(): void
     {

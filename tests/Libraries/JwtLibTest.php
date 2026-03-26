@@ -11,32 +11,30 @@ use Firebase\JWT\Key;
  *
  * Tests JWT token encoding/decoding directly (no HTTP needed).
  *
- * ┌─────────────────────────────────────────────────────────────────┐
- * │  HOW TO ADD LIBRARY TESTS                                       │
- * │                                                                  │
- * │  1. Create a file in tests/Libraries/ e.g. RedisLibTest.php     │
- * │  2. Test the library logic directly (no HTTP requests needed)   │
- * │  3. Use setUp() to initialize any shared state                  │
- * │                                                                  │
- * │  Example:                                                        │
- * │                                                                  │
- * │    class RedisLibTest extends TestCase                           │
- * │    {                                                              │
- * │        public function test_can_set_and_get_value(): void       │
- * │        {                                                          │
- * │            $redis = new \Redis();                                │
- * │            $redis->connect('127.0.0.1', 6379);                  │
- * │            $redis->set('test_key', 'hello');                     │
- * │            $this->assertEquals('hello',                         │
- * │                $redis->get('test_key'));                          │
- * │            $redis->del('test_key');                              │
- * │        }                                                          │
- * │    }                                                              │
- * └─────────────────────────────────────────────────────────────────┘
+ * HOW TO ADD LIBRARY TESTS:
+ *
+ *   1. Create a file in tests/Libraries/ e.g. RedisLibTest.php
+ *   2. Test the library logic directly (no HTTP requests needed)
+ *   3. Use setUp() to initialize any shared state
+ *
+ *   Example:
+ *
+ *     class RedisLibTest extends TestCase
+ *     {
+ *         public function test_can_set_and_get_value(): void
+ *         {
+ *             $redis = new \Redis();
+ *             $redis->connect('127.0.0.1', 6379);
+ *             $redis->set('test_key', 'hello');
+ *             $this->assertEquals('hello', $redis->get('test_key'));
+ *             $redis->del('test_key');
+ *         }
+ *     }
  */
 class JwtLibTest extends TestCase
 {
-    private string $secret = 'test-secret-key-for-unit-tests';
+    // firebase/php-jwt v7 requires HS256 keys to be at least 256 bits (32 bytes)
+    private string $secret = 'test-secret-key-for-phpunit-ci3-tests';
     private string $algorithm = 'HS256';
 
     public function test_can_encode_and_decode_token(): void
@@ -61,7 +59,7 @@ class JwtLibTest extends TestCase
         $payload = [
             'iss' => 'test',
             'iat' => time() - 7200,
-            'exp' => time() - 3600,  // expired 1 hour ago
+            'exp' => time() - 3600,
             'data' => ['user_id' => 1]
         ];
 
@@ -83,7 +81,8 @@ class JwtLibTest extends TestCase
         $token = JWT::encode($payload, $this->secret, $this->algorithm);
 
         $this->expectException(\Firebase\JWT\SignatureInvalidException::class);
-        JWT::decode($token, new Key('wrong-secret', $this->algorithm));
+        // wrong-secret-key-that-is-long-enough-for-v7 = 40+ chars
+        JWT::decode($token, new Key('wrong-secret-key-that-is-long-enough-for-v7', $this->algorithm));
     }
 
     public function test_token_has_three_parts(): void
@@ -104,9 +103,9 @@ class JwtLibTest extends TestCase
     public function test_payload_data_is_preserved(): void
     {
         $data = [
-            'user_id'  => 99,
-            'username' => 'testuser',
-            'role'     => 'editor',
+            'user_id'     => 99,
+            'username'    => 'testuser',
+            'role'        => 'editor',
             'permissions' => ['read', 'write']
         ];
 
