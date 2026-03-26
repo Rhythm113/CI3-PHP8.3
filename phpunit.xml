@@ -2,24 +2,31 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         cacheDirectory=".phpunit.cache"
          colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
          failOnWarning="true"
-         stopOnFailure="false">
+         failOnRisky="true"
+         beStrictAboutOutputDuringTests="true">
+
     <testsuites>
-        <testsuite name="CI3-PHP8.3 Test Suite">
+        <testsuite name="Unit Tests">
             <directory>tests</directory>
+            <exclude>tests/Api</exclude>
+        </testsuite>
+        <testsuite name="API Tests">
+            <directory>tests/Api</directory>
+        </testsuite>
+        <testsuite name="Library Tests">
+            <directory>tests/Libraries</directory>
         </testsuite>
     </testsuites>
-    <source>
-        <include>
-            <directory>application</directory>
-            <directory>system/core</directory>
-        </include>
-        <exclude>
-            <directory>application/cache</directory>
-            <directory>application/logs</directory>
-            <directory>vendor</directory>
-        </exclude>
-    </source>
+
+    <php>
+        <const name="ENVIRONMENT" value="testing"/>
+    </php>
+
+    <logging>
+        <junit outputFile="tests/results/junit.xml"/>
+    </logging>
 </phpunit>

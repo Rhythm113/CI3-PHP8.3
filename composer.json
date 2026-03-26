@@ -18,5 +18,11 @@
 		"psr-4": {
 			"Tests\\": "tests/"
 		}
+	},
+	"scripts": {
+		"test": "phpunit",
+		"test:unit": "phpunit --testsuite 'Unit Tests' --testsuite 'Library Tests'",
+		"test:api": "phpunit --testsuite 'API Tests'",
+		"test:results": "phpunit --log-junit tests/results/junit-unit.xml && php tests/generate_results.php > automated_tests.md"
 	}
 }
