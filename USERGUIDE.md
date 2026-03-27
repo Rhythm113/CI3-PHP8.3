@@ -13,6 +13,7 @@ A practical guide for setting up the database and building applications with thi
 5. [Using the JWT Auth System](#5-using-the-jwt-auth-system)
 6. [Rate Limiting](#6-rate-limiting)
 7. [Using the cURL Library](#7-using-the-curl-library)
+8. [Redis Setup](#8-redis-setup)
 
 ---
 
@@ -561,6 +562,201 @@ $response = $this->curl_lib->get('https://example.com/api/data');
 
 ---
 
+## 8. Redis Setup
+
+Redis is used for rate limiting and sessions. It is not a database driver in CI3 --
+it is accessed via the `Redis_lib` library or CI3's built-in cache/session drivers.
+
+### Install Redis
+
+#### Linux (Ubuntu/Debian)
+
+```bash
+sudo apt-get install redis-server
+sudo systemctl enable redis-server
+sudo systemctl start redis-server
+
+# Verify it is running
+redis-cli ping
+# Expected output: PONG
+```
+
+#### Windows (XAMPP)
+
+Redis does not have an official Windows build for recent versions.
+The recommended options are:
+
+**Option A: Use WSL (Windows Subsystem for Linux)**
+
+```bash
+# Inside WSL terminal
+sudo apt-get install redis-server
+sudo service redis-server start
+redis-cli ping
+```
+
+Then connect from PHP using `127.0.0.1:6379` as normal.
+
+**Option B: Use a pre-built Windows port**
+
+Download from: https://github.com/microsoftarchive/redis/releases
+
+Extract and run `redis-server.exe`. It listens on port 6379 by default.
+
+### Enable the PHP Redis Extension
+
+#### Linux
+
+```bash
+sudo apt-get install php8.3-redis
+sudo systemctl restart apache2
+```
+
+Verify it is loaded:
+
+```bash
+php -m | grep redis
+```
+
+#### Windows (XAMPP)
+
+1. Download the `php_redis.dll` matching your PHP version from:
+   https://pecl.php.net/package/redis
+
+2. Copy `php_redis.dll` to `E:\xampp\php\ext\`
+
+3. Open `E:\xampp\php\php.ini` and add:
+
+```ini
+extension=redis
+```
+
+4. Restart Apache in the XAMPP Control Panel.
+
+Verify it loaded by visiting `http://localhost/CI3/index.php` -- if no Redis
+error appears the extension is active. Or check phpinfo:
+
+```php
+// Temporary check controller
+phpinfo();
+// Search for 'redis' on the page
+```
+
+### Configure Redis in CI3
+
+Edit `application/config/redis.php`:
+
+```php
+// Connection settings
+$config['redis_host']     = '127.0.0.1'; // use 127.0.0.1, not localhost
+$config['redis_port']     = 6379;
+$config['redis_password'] = NULL;        // set if Redis requires AUTH
+$config['redis_database'] = 0;           // 0-15 (default 0)
+$config['redis_timeout']  = 2.5;         // connection timeout in seconds
+
+// Key prefix to avoid collisions with other apps on the same Redis instance
+$config['redis_prefix']   = 'ci3:';
+```
+
+If Redis requires a password, set it in `redis.conf`:
+
+```
+requirepass your_redis_password
+```
+
+Then set `$config['redis_password'] = 'your_redis_password';` in redis.php.
+
+### Use Redis for Rate Limiting
+
+Edit `application/config/rate_limit.php`:
+
+```php
+$config['rate_limit_driver'] = 'redis'; // switch from 'file' to 'redis'
+```
+
+Redis-backed rate limiting is more accurate than file-based because it uses
+atomic increment operations. It also works correctly across multiple web
+server processes.
+
+### Use Redis for CI3 Sessions
+
+Edit `application/config/config.php`:
+
+```php
+$config['sess_driver']    = 'redis';
+$config['sess_save_path'] = 'tcp://127.0.0.1:6379';
+
+// With password and custom database:
+// $config['sess_save_path'] = 'tcp://127.0.0.1:6379?auth=your_password&database=1';
+```
+
+### Use Redis for CI3 Cache
+
+In any controller:
+
+```php
+// Load the cache driver with redis adapter
+$this->load->driver('cache', array('adapter' => 'redis', 'backup' => 'file'));
+
+// Store a value for 300 seconds
+$this->cache->save('my_key', $data, 300);
+
+// Retrieve it
+$cached = $this->cache->get('my_key');
+
+// Delete it
+$this->cache->delete('my_key');
+```
+
+### Use the Redis_lib Library Directly
+
+The `Redis_lib` library wraps phpredis for low-level access:
+
+```php
+$this->load->library('redis_lib');
+
+if ($this->redis_lib->is_connected())
+{
+    // Set a value with 60 second TTL
+    $this->redis_lib->set('session:user:42', json_encode($user_data), 60);
+
+    // Get a value
+    $data = $this->redis_lib->get('session:user:42');
+
+    // Increment a counter
+    $hits = $this->redis_lib->incr('page:hits');
+
+    // Delete a key
+    $this->redis_lib->del('session:user:42');
+
+    // Check TTL
+    $ttl = $this->redis_lib->ttl('session:user:42');
+}
+```
+
+### Verify Redis is Working
+
+Create a quick test route in a controller:
+
+```php
+public function redis_test()
+{
+    $this->load->library('redis_lib');
+
+    if ( ! $this->redis_lib->is_connected())
+    {
+        echo 'Redis not connected';
+        return;
+    }
+
+    $this->redis_lib->set('test_key', 'hello', 10);
+    $val = $this->redis_lib->get('test_key');
+    echo $val === 'hello' ? 'Redis OK' : 'Redis read/write failed';
+}
+```
+
+---
+
 ## File Reference
 
 | File                                    | Purpose                              |
@@ -572,6 +768,7 @@ $response = $this->curl_lib->get('https://example.com/api/data');
 | application/core/API_Controller.php     | Base controller for all API routes   |
 | application/libraries/Jwt_lib.php       | JWT encode/decode wrapper            |
 | application/libraries/Rate_limiter.php  | IP-based rate limiting               |
+| application/libraries/Redis_lib.php     | Low-level Redis client wrapper       |
 | application/libraries/Curl_lib.php      | HTTP client wrapper                  |
 | scripts/test_api.py                     | Python API test script               |
 | scripts/test_api.sh                     | Bash API test script                 |
