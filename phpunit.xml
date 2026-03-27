@@ -10,12 +10,17 @@
          beStrictAboutOutputDuringTests="true">
 
     <testsuites>
+        <!--
+            Unit Tests: framework structure, PHP syntax, and library logic.
+            These run in CI without a live server or database.
+
+            API tests (tests/Api/) require a running Apache + DB instance.
+            Run them manually with: bash scripts/test_api.sh http://your-server
+        -->
         <testsuite name="Unit Tests">
             <directory>tests</directory>
             <exclude>tests/Api</exclude>
-        </testsuite>
-        <testsuite name="API Tests">
-            <directory>tests/Api</directory>
+            <exclude>tests/Libraries</exclude>
         </testsuite>
         <testsuite name="Library Tests">
             <directory>tests/Libraries</directory>
