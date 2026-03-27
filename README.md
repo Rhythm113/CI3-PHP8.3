@@ -10,6 +10,7 @@
 > [GitHub Issues](https://github.com/Rhythm113/CI3-PHP8.3/issues) page.
 
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](automated_tests.md)
+[![Release](https://img.shields.io/badge/release-v1.0.0-blue)](RELEASE_NOTES.md)
 
 ---
 
