@@ -9,6 +9,8 @@
 > Issues and pull requests are welcome. Please open them on the
 > [GitHub Issues](https://github.com/Rhythm113/CI3-PHP8.3/issues) page.
 
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](automated_tests.md)
+
 ---
 
 ## What This Is
@@ -18,6 +20,7 @@ A maintained fork of CodeIgniter 3.1.13 with:
 - PHP 8.2 and PHP 8.3 compatibility patches applied to the system core
 - Fixes for removed functions (`mysqli_driver`, `get_magic_quotes_gpc`, `mbstring.internal_encoding`, etc.)
 - `#[AllowDynamicProperties]` applied to all core classes that require it
+- See [automated_tests.md](automated_tests.md) for the syntax check report
 - A built-in JWT auth system, rate limiter, Redis library, and cURL wrapper
 - A Python migration script (`ci3_migrate.py`) for porting legacy CI3 apps with auto-patching
 
