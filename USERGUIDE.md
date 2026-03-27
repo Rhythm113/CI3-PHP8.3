@@ -1,6 +1,9 @@
 # CI3 PHP 8.3 User Guide
 
-A practical guide for setting up the database and building applications with this CodeIgniter 3 stack.
+> **Note**: This is an unofficial community port of CodeIgniter 3, maintained by
+> [Rhythm113](https://github.com/Rhythm113). It is not affiliated with the CodeIgniter Foundation.
+> See [README.md](README.md) for the full disclaimer.
+> Issues can be reported at [github.com/Rhythm113/CI3-PHP8.3/issues](https://github.com/Rhythm113/CI3-PHP8.3/issues).
 
 ---
 
@@ -14,6 +17,7 @@ A practical guide for setting up the database and building applications with thi
 6. [Rate Limiting](#6-rate-limiting)
 7. [Using the cURL Library](#7-using-the-curl-library)
 8. [Redis Setup](#8-redis-setup)
+9. [Migration Script](#9-migration-script)
 
 ---
 
@@ -773,3 +777,103 @@ public function redis_test()
 | scripts/test_api.py                     | Python API test script               |
 | scripts/test_api.sh                     | Bash API test script                 |
 | SETUP_GUIDE.md                          | Linux server setup instructions      |
+| ci3_migrate.py                          | Python migration + auto-patch script |
+
+---
+
+## 9. Migration Script
+
+`ci3_migrate.py` automates porting a legacy CI3 project into this one. It detects the
+source CI version, migrates all application directories, merges config files, and
+auto-patches deprecated PHP 8.x patterns in the copied files.
+
+### Requirements
+
+- Python 3.9+
+- Optional: PHP binary on PATH (for `php -l` syntax checks)
+
+### Basic Usage
+
+```powershell
+# Preview what would happen -- no files are changed
+python ci3_migrate.py C:\old-project --target D:\NSU\CI3 --dry-run
+
+# Live migration (skips files that already exist in the target)
+python ci3_migrate.py C:\old-project --target D:\NSU\CI3
+
+# Overwrite all existing application files
+python ci3_migrate.py C:\old-project --target D:\NSU\CI3 --overwrite
+
+# Specify PHP binary explicitly (enables syntax check)
+python ci3_migrate.py C:\old-project --php E:\xampp\php\php.exe
+
+# Write report to a custom path
+python ci3_migrate.py C:\old-project --report D:\reports\migration.md
+```
+
+### What Gets Migrated
+
+The following sub-directories of `application/` are migrated:
+
+| Directory | Notes |
+|---|---|
+| `controllers/` | Copied |
+| `models/` | Copied |
+| `helpers/` | Copied |
+| `libraries/` | Copied |
+| `views/` | Copied |
+| `hooks/` | Copied |
+| `third_party/` | Copied |
+| `language/` | Copied |
+| `core/` | Copied |
+| `config/` | Merged (new keys appended; existing keys kept with conflict note) |
+
+Config merging is smart: if a key exists in both source and target with different values,
+the target value is kept and the conflict is listed in the report for manual review.
+
+### Auto-Patches Applied During Migration
+
+PHP files are patched automatically during copy.
+Non-PHP files (views, assets) are copied as-is.
+
+| Deprecated pattern | Auto-fix |
+|---|---|
+| `get_magic_quotes_gpc()` | `function_exists()` guard added |
+| `ini_set('mbstring.internal_encoding', ...)` | `mb_internal_encoding(...)` |
+| `ini_set('iconv.internal_encoding', ...)` | `iconv_set_encoding()` with PHP 8 version guard |
+| `ini_set('session.hash_function', ...)` | Replaced with explanatory comment |
+| `utf8_encode(...)` | `mb_convert_encoding(...)` |
+| `utf8_decode(...)` | `mb_convert_encoding(..., 'ISO-8859-1', 'UTF-8')` |
+| `FILTER_SANITIZE_STRING` | `FILTER_DEFAULT` |
+| `new mysqli_driver()` | `mysqli_report(MYSQLI_REPORT_OFF)` |
+| `create_function(...)`, `each(...)`, `ereg*()`, `mysql_*()` | TODO comment added |
+
+### Migration Report
+
+A `migration_report.md` is written to the target directory after every run. It contains:
+
+- Project info (versions, paths, PHP binary)
+- Migration summary table
+- Auto-patches applied (file-by-file)
+- PHP 8.x issue scan results (errors, warnings, infos)
+- PHP syntax check results
+- Config conflicts requiring manual review
+
+### Dynamic Properties
+
+If your application controllers or models use dynamic properties (properties not declared
+in the class body), add `#[AllowDynamicProperties]` to the class definition:
+
+```php
+#[AllowDynamicProperties]
+class My_model extends CI_Model
+{
+    // dynamic $this->foo = 'bar'; is now allowed
+}
+```
+
+This prevents `Deprecated: Creation of dynamic property` warnings on PHP 8.2+.
+
+---
+
+*End of User Guide*
