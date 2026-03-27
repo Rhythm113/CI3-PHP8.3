@@ -1,10 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once FCPATH . 'vendor/autoload.php';
+// Load Composer autoloader (run `composer install` in the project root if this fails)
+if ( ! class_exists('Firebase\\JWT\\JWT', FALSE))
+{
+    $autoload = FCPATH . 'vendor/autoload.php';
+    if ( ! file_exists($autoload))
+    {
+        show_error(
+            'Composer dependencies not found. Run <code>composer install</code> in the project root.',
+            500,
+            'Jwt_lib Error'
+        );
+    }
+    require_once $autoload;
+}
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
 
 /**
  * JWT Library for CodeIgniter 3

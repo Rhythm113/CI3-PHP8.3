@@ -58,7 +58,8 @@ class Rate_limiter {
             $identifier = $this->CI->input->ip_address();
         }
 
-        $key = 'rate_limit:' . md5($identifier);
+        // Use `rl_` prefix - colons are invalid in Windows filenames
+        $key = 'rl_' . md5($identifier);
 
         if ($this->driver === 'redis')
         {
@@ -80,14 +81,14 @@ class Rate_limiter {
         if (file_exists($file))
         {
             $content = file_get_contents($file);
-            $data = json_decode($content, TRUE);
+            $decoded = json_decode($content, TRUE);
 
-            if ($data === NULL)
+            if (is_array($decoded))
             {
-                $data = array('count' => 0, 'start' => time());
+                $data = $decoded;
             }
 
-            // Check if window has expired
+            // Reset if window has expired
             if ((time() - $data['start']) >= $this->window)
             {
                 $data = array('count' => 0, 'start' => time());
@@ -96,11 +97,14 @@ class Rate_limiter {
 
         $data['count']++;
 
-        file_put_contents($file, json_encode($data), LOCK_EX);
+        // Persist - log a warning if the write fails so it's diagnosable
+        if (file_put_contents($file, json_encode($data), LOCK_EX) === FALSE)
+        {
+            log_message('error', 'Rate_limiter: failed to write cache file: ' . $file);
+        }
 
-        // Set headers
         $remaining = max(0, $this->max_requests - $data['count']);
-        $reset = $data['start'] + $this->window;
+        $reset     = $data['start'] + $this->window;
         $this->_set_rate_headers($this->max_requests, $remaining, $reset);
 
         if ($data['count'] > $this->max_requests)
