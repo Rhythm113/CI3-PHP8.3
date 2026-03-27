@@ -56,13 +56,13 @@ in the process.
 
 ```powershell
 # Preview what would be migrated (no files changed)
-python ci3_migrate.py C:\path\to\old-project --target D:\path\to\this-project --dry-run
+python scripts/ci3_migrate.py C:\path\to\old-project --target D:\path\to\this-project --dry-run
 
 # Live migration (skip files that already exist)
-python ci3_migrate.py C:\path\to\old-project --target D:\path\to\this-project
+python scripts/ci3_migrate.py C:\path\to\old-project --target D:\path\to\this-project
 
 # Overwrite all existing files
-python ci3_migrate.py C:\path\to\old-project --target D:\path\to\this-project --overwrite
+python scripts/ci3_migrate.py C:\path\to\old-project --target D:\path\to\this-project --overwrite
 ```
 
 ### What it auto-patches
@@ -80,7 +80,32 @@ The script applies the following fixes to PHP files during migration:
 - `create_function(...)`, `each(...)`, `ereg*()`, `mysql_*()` -- TODO comment added
 
 A `migration_report.md` is generated in the target directory after every run.
+See [scripts/ci3_migrate.py](scripts/ci3_migrate.py) for the full source.
 
+---
+
+## Automated Compatibility Test
+
+[`scripts/ci3_compat_test.py`](scripts/ci3_compat_test.py) scans the project for PHP 8.x
+breaking changes and runs `php -l` on every PHP file without migrating anything.
+Use it to audit the current project at any time.
+
+```powershell
+# Scan everything (system/ + application/)
+python scripts/ci3_compat_test.py
+
+# Scan application/ only (faster)
+python scripts/ci3_compat_test.py --app-only
+
+# Write a Markdown report
+python scripts/ci3_compat_test.py --report compat_report.md
+
+# Specify PHP binary
+python scripts/ci3_compat_test.py --php E:\xampp\php\php.exe --app-only
+```
+
+Exit code `0` = all clear. Exit code `1` = errors or syntax failures found.
+Safe to run in CI pipelines.
 
 ## Reporting Issues
 
