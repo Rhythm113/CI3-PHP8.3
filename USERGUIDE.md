@@ -6,13 +6,13 @@ A practical guide for setting up the database and building applications with thi
 
 ## Table of Contents
 
-1. [Database Setup](#database-setup)
-2. [Switching Databases](#switching-databases)
-3. [Testing the Connection](#testing-the-connection)
-4. [Sample Application: Task Manager API](#sample-application-task-manager-api)
-5. [Using the JWT Auth System](#using-the-jwt-auth-system)
-6. [Rate Limiting](#rate-limiting)
-7. [Using the cURL Library](#using-the-curl-library)
+1. [Database Setup](#1-database-setup)
+2. [Switching Databases](#2-switching-databases)
+3. [Testing the Connection](#3-testing-the-connection)
+4. [Sample Application: Task Manager API](#4-sample-application-task-manager-api)
+5. [Using the JWT Auth System](#5-using-the-jwt-auth-system)
+6. [Rate Limiting](#6-rate-limiting)
+7. [Using the cURL Library](#7-using-the-curl-library)
 
 ---
 
