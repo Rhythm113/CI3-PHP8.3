@@ -181,6 +181,13 @@ MERGEABLE_CONFIGS = {
     "upload.php",
     "session.php",
     "pagination.php",
+    # CI 3.0.x additional config files
+    "foreign_chars.php",
+    "mimes.php",
+    "smileys.php",
+    "doctypes.php",
+    "profiler.php",
+    "user_agents.php",
 }
 
 # -------------------------------------------------------------------------------
@@ -324,13 +331,16 @@ def find_php_binary() -> str:
 
 
 def detect_ci_version(project_root: Path) -> str:
-    """Read CI_VERSION from system/core/CodeIgniter.php."""
-    ci_file = project_root / "system" / "core" / "CodeIgniter.php"
-    if not ci_file.exists():
-        return "Unknown (system/core/CodeIgniter.php not found)"
-    content = ci_file.read_text(encoding="utf-8", errors="replace")
-    m = re.search(r"CI_VERSION\s*=\s*['\"]([^'\"]+)['\"]", content)
-    return m.group(1) if m else "Unknown"
+    """Read CI_VERSION from system/core/CodeIgniter.php or Common.php (CI 3.0.x fallback)."""
+    for fname in ["CodeIgniter.php", "Common.php"]:
+        ci_file = project_root / "system" / "core" / fname
+        if not ci_file.exists():
+            continue
+        content = ci_file.read_text(encoding="utf-8", errors="replace")
+        m = re.search(r"CI_VERSION\s*=\s*['\"]([^'\"]+)['\"]", content)
+        if m:
+            return m.group(1)
+    return "Unknown (CI_VERSION not found)"
 
 
 def detect_php_min_version(project_root: Path) -> str:
@@ -893,6 +903,31 @@ def main():
     print(f"  Source PHP req    : {src_php_req}")
     print(f"  Dry-run mode      : {args.dry_run}")
     print(f"  Overwrite mode    : {args.overwrite}")
+
+    # -- Version compatibility advisory ---------------------------------------
+    def _parse_ver(v: str):
+        """Parse a version string like '3.0.6' into a comparable tuple."""
+        try:
+            parts = [int(x) for x in re.findall(r'\d+', v)]
+            return tuple(parts) if parts else (0,)
+        except Exception:
+            return (0,)
+
+    src_ver = _parse_ver(src_version)
+    tgt_ver = _parse_ver(tgt_version)
+
+    if src_ver < (3, 0, 0):
+        print("  WARNING: Source version appears to be CI 2.x or unknown.")
+        print("           This script is designed for CI 3.x sources only.")
+        print("           Proceed with caution and review all migrated files manually.")
+    elif src_ver < (3, 1, 0):
+        print(f"  NOTE: Source is CI {src_version} (pre-3.1.0).")
+        print("        Layout is compatible. mimes.php / foreign_chars.php will be merged if present.")
+        print("        Review config/mimes.php after migration -- MIME types expanded in 3.1.x.")
+
+    if tgt_ver < (3, 1, 0):
+        print(f"  WARNING: Target CI version ({tgt_version}) is older than 3.1.0.")
+        print("           Consider upgrading the target system/ core to 3.1.13.")
     print()
 
     # --- Migrate files ---
